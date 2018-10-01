@@ -41,10 +41,21 @@ function logic(state)
 {
 	return Object.assign({},config.state,state)
 }
-function output({viewbox})
+function output({cursor,palette,viewbox})
 {
-	const {height,width}=viewbox
+	const
+	{height,width}=viewbox,
+	colors=Object.values(palette)
+	.map(color=>v('button',{style:`background-color:${color}`}))
 	return [v('style',{},config.css),
+		v('div.coords',{},cursor.x+','+cursor.y),
+		v('header.tools',{},
+			v('button',{},'pencil')
+		),
+		v('footer.palette',{},
+			...colors,
+			v('button',{},'+')
+		),
 		v('canvas',{height,on:{pointerdown:input},width})
 	]
 }
