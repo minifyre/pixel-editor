@@ -1,7 +1,7 @@
-import config from './config.mjs'
+import silo from './logic.mjs'
 import truth from './node_modules/truth/truth.mjs'
-import util from './util.mjs'
 import v from './node_modules/v/v.mjs'
+const {config,logic,util}=silo
 export default async function pixel(url='/node_modules/pixel-editor/')
 {
 	const
@@ -25,10 +25,6 @@ pixel.editor=class extends HTMLElement
 		this.ctx=Object.assign(shadow.querySelector('canvas').getContext('2d'),{imageSmoothingEnabled:false})
 		//@todo copy resize observer from code-editor & integrate it here
 	}
-}
-function logic(state)
-{
-	return Object.assign({},config.state,state)
 }
 function output(editor)
 {
@@ -105,9 +101,4 @@ input.pointermove=function(evt,editor)
 	{pointerId:id,pressure}=evt
 	Object.assign(editor.state.pointers[id],{pressure,x,y})
 	if(pressure) logic.draw(editor.state,x,y)
-}
-logic.draw=function(state,x,y)
-{
-	//@todo enable different tools
-	state.pts[x+','+y]=0//@todo allow different colors
 }
