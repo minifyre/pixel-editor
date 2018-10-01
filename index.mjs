@@ -4,16 +4,26 @@ const
 config={},
 util=
 {
-	evt:(fn,types,...args)=>types.split(',').forEach(type=>fn(type,...args)),
-	importFiles:paths=>Promise.all(paths.map(x=>fetch(x).then(x=>x.text()))),
-	off:(el,...args)=>util.evt(el.removeEventListener,...args),
-	on:(el,...args)=>util.evt(el.addEventListener,...args)
+	importFiles:paths=>Promise.all(paths.map(x=>fetch(x).then(x=>x.text())))
+}
+util.evt2coords=function(evt)
+{
+	const
+	{target:img}=evt,
+	[can]=img.getClientRects(),
+	[x,y]=
+	[
+		(evt.pageX-can.x)*(img.width/can.width),
+		(evt.pageY-can.y)*(img.height/can.height)
+	]
+	.map(num=>Math.abs(Math.round(num)))
+	return {x,y}
 }
 
 config.state=
 {
-	cursor:{x:0,y:0},
 	palette:['#000'],
+	pointers:{},
 	pts:{},
 	viewbox:{height:150,width:300,x:0,y:0}
 }
@@ -34,7 +44,7 @@ pixel.editor=class extends HTMLElement
 		initalState=logic(state)
 		let renderer=x=>x
 		this.state=truth(initalState,(...args)=>renderer(args))
-		this.dom=output(this.state)
+		this.dom=output(this)
 		v.flatUpdate(shadow,this.dom)
 		renderer=()=>output.render(this)
 		this.ctx=Object.assign(shadow.querySelector('canvas').getContext('2d'),{imageSmoothingEnabled:false})
@@ -45,14 +55,22 @@ function logic(state)
 {
 	return Object.assign({},config.state,state)
 }
-function output({cursor,palette,viewbox})
+function output(editor)
 {
 	const
+	{palette,viewbox}=editor.state,
 	{height,width}=viewbox,
+	on={},
+	handler=evt=>input(evt,editor),
 	colors=Object.values(palette)
 	.map(color=>v('button',{style:`background-color:${color}`}))
+
+	'over,down,move,up,out'
+	.split(',')
+	.forEach(type=>on[`pointer${type}`]=handler)
+
 	return [v('style',{},config.css),
-		v('.coords.ui',{},cursor.x+','+cursor.y),
+		v('.coords.ui',{},','),
 		v('header.tools.ui',{},
 			v('button',{},'pencil')
 		),
@@ -60,7 +78,7 @@ function output({cursor,palette,viewbox})
 			...colors,
 			v('button',{},'+')
 		),
-		v('canvas',{height,on:{pointerdown:input,pointermove:input},width})
+		v('canvas',{height,on,width})
 	]
 }
 output.render=function(editor)
@@ -77,50 +95,35 @@ output.render=function(editor)
 		[x,y]=coords.split(',').map(num=>parseInt(num))
 		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
 	})
-	const newDom=output(state)
+	const newDom=output(editor)
 	v.flatUpdate(shadowRoot,editor.dom,newDom)
 	editor.dom=newDom
 }
-function input(evt)
+function input(evt,editor)
 {
-	const//@todo clean up evt2editor code
-	editor=evt.path.find(x=>(x.tagName||'').toLowerCase()==='pixel-editor')
 	input[evt.type](evt,editor)
 }
-input.pointerdown=function(evt,editor)
+input.pointerup=input.pointerdown=function({pointerId:id,pressure},editor)
+{
+	editor.state.pointers[id].pressure=pressure
+}
+input.pointerout=function({pointerId:id},editor)
+{
+	delete editor.state.pointers[id]
+}
+input.pointerover=function(evt,editor)
 {
 	const
-	{on,off}=util,
-	{target:el}=evt,
-	drawPt=function(evt)
-	{
-		
-	},
-	cleanup=function()
-	{
-		off(el,'pointerdown,pointermove',drawPt)
-		off(el,'pointerup',cleanup)
-		on(el,'pointerdown',input)
-	},
-	setup=function()
-	{
-		off(el,'pointerdown',input)
-		on(el,'pointerdown,pointermove',drawPt)
-		on(el,'pointerup',cleanup)
-	}
-	setup()
-	drawPt(evt)
+	{x,y}=util.evt2coords(evt),
+	{pointerId:id,pressure}=evt
+	editor.state.pointers[id]={id,pressure,x,y}
 }
 input.pointermove=function(evt,editor)
 {
 	const
-	{target:img}=evt,
-	[can]=img.getClientRects(),
-	[x,y]=	[
-				(evt.pageX-can.x)*(img.width/can.width),
-				(evt.pageY-can.y)*(img.height/can.height)
-			]
-			.map(num=>Math.abs(Math.round(num)))
-	editor.state.cursor.x=x
-	editor.state.cursor.y=y
+	{x,y}=util.evt2coords(evt),
+	{pointerId:id,pressure}=evt
+	Object.assign(editor.state.pointers[id],{pressure,x,y})
+	//@todo allow different tools
+	if(pressure) editor.state.pts[x+','+y]=0//@todo allow different colors
 }
