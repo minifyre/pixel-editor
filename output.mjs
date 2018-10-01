@@ -1,6 +1,6 @@
-import silo from './logic.mjs'
+import silo from './input.mjs'
 import v from './node_modules/v/v.mjs'
-const {config,logic,util}=silo
+const {config,input,logic,util}=silo
 function output(editor)
 {
 	const

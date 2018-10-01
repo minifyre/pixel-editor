@@ -1,4 +1,4 @@
-import silo from './input.mjs'
+import silo from './output.mjs'
 import truth from './node_modules/truth/truth.mjs'
 const {config,input,logic,output,util,v}=silo
 export default async function pixel(url='/node_modules/pixel-editor/')

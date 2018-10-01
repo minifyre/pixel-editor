@@ -1,5 +1,5 @@
-import silo from './output.mjs'
-const {config,logic,output,util}=silo
+import silo from './logic.mjs'
+const {config,logic,util}=silo
 function input(evt,editor)
 {
 	input[evt.type](evt,editor)
