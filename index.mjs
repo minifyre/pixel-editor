@@ -104,9 +104,13 @@ function input(evt,editor)
 {
 	input[evt.type](evt,editor)
 }
-input.pointerup=input.pointerdown=function({pointerId:id,pressure},editor)
+input.pointerup=input.pointerdown=function(evt,editor)
 {
+	const
+	{x,y}=util.evt2coords(evt),
+	{pointerId:id,pressure}=evt
 	editor.state.pointers[id].pressure=pressure
+	if(pressure) logic.draw(editor.state,x,y)
 }
 input.pointerout=function({pointerId:id},editor)
 {
@@ -125,6 +129,10 @@ input.pointermove=function(evt,editor)
 	{x,y}=util.evt2coords(evt),
 	{pointerId:id,pressure}=evt
 	Object.assign(editor.state.pointers[id],{pressure,x,y})
-	//@todo allow different tools
-	if(pressure) editor.state.pts[x+','+y]=0//@todo allow different colors
+	if(pressure) logic.draw(editor.state,x,y)
+}
+logic.draw=function(state,x,y)
+{
+	//@todo enable different tools
+	state.pts[x+','+y]=0//@todo allow different colors
 }
