@@ -83,7 +83,26 @@ function input(evt)
 	{on,off}=util,
 	{target:el}=evt,
 	editor=evt.path.find(x=>(x.tagName||'').toLowerCase()==='pixel-editor'),
-	drawPt=({layerX:x,layerY:y})=>editor.state.pts[x+','+y]=0,//@todo allow other colors
+	drawPt=function(evt)
+	{
+		const
+		[rect]=el.getClientRects(),
+		can=
+		{
+			h:rect.height,
+			w:rect.width,
+			x:rect.x,
+			y:rect.y
+		},
+		img=
+		{
+			h:el.height,
+			w:el.width
+		},
+		x=Math.round((evt.pageX-can.x)*(img.w/can.w)),
+		y=Math.round((evt.pageY-can.y)*(img.h/can.h))
+		editor.state.pts[x+','+y]=0//@todo allow other colors
+	},
 	cleanup=function()
 	{
 		off(el,'pointerdown,pointermove',drawPt)
