@@ -1,14 +1,7 @@
+import config from './config.mjs'
 import truth from './node_modules/truth/truth.mjs'
 import util from './util.mjs'
 import v from './node_modules/v/v.mjs'
-const config={}
-config.state=
-{
-	palette:['#000'],
-	pointers:{},
-	pts:{},
-	viewbox:{height:150,width:300,x:0,y:0}
-}
 export default async function pixel(url='/node_modules/pixel-editor/')
 {
 	const
