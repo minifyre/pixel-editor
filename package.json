@@ -1,0 +1,14 @@
+{
+	"name": "pixel-editor",
+	"description": "A paint-like program for editing pixel art.",
+	"homepage": "https://github.com/minifyre/pixel-editor",
+	"license": "MIT",
+	"version": "0.5.0",
+	"dependencies": {
+		"truth": "minifyre/truth",
+		"v": "minifyre/v"
+	},
+	"devDependencies": {
+		"cherub": "minifyre/cherub"
+	}
+}
