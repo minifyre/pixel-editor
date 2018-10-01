@@ -116,8 +116,11 @@ input.pointermove=function(evt,editor)
 	const
 	{target:img}=evt,
 	[can]=img.getClientRects(),
-	x=Math.abs(Math.round((evt.pageX-can.x)*(img.width/can.width))),
-	y=Math.abs(Math.round((evt.pageY-can.y)*(img.height/can.height)))
+	[x,y]=	[
+				(evt.pageX-can.x)*(img.width/can.width),
+				(evt.pageY-can.y)*(img.height/can.height)
+			]
+			.map(num=>Math.abs(Math.round(num)))
 	editor.state.cursor.x=x
 	editor.state.cursor.y=y
 }
