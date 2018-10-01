@@ -58,19 +58,20 @@ function logic(state)
 function output(editor)
 {
 	const
-	{palette,viewbox}=editor.state,
+	{palette,pointers,viewbox}=editor.state,
 	{height,width}=viewbox,
 	on={},
 	handler=evt=>input(evt,editor),
 	colors=Object.values(palette)
-	.map(color=>v('button',{style:`background-color:${color}`}))
+	.map(color=>v('button',{style:`background-color:${color}`})),
+	{x,y}=[...Object.values(pointers),viewbox][0]
 
 	'over,down,move,up,out'
 	.split(',')
 	.forEach(type=>on[`pointer${type}`]=handler)
 
 	return [v('style',{},config.css),
-		v('.coords.ui',{},','),
+		v('.coords.ui',{},x+','+y),
 		v('header.tools.ui',{},
 			v('button',{},'pencil')
 		),
