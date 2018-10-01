@@ -12,6 +12,7 @@ util=
 
 config.state=
 {
+	cursor:{x:0,y:0},
 	palette:['#000'],
 	pts:{},
 	viewbox:{height:150,width:300,x:0,y:0}
