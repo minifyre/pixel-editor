@@ -52,20 +52,22 @@ function output({cursor,palette,viewbox})
 	colors=Object.values(palette)
 	.map(color=>v('button',{style:`background-color:${color}`}))
 	return [v('style',{},config.css),
-		v('div.coords',{},cursor.x+','+cursor.y),
-		v('header.tools',{},
+		v('.coords.ui',{},cursor.x+','+cursor.y),
+		v('header.tools.ui',{},
 			v('button',{},'pencil')
 		),
-		v('footer.palette',{},
+		v('footer.palette.ui',{},
 			...colors,
 			v('button',{},'+')
 		),
-		v('canvas',{height,on:{pointerdown:input},width})
+		v('canvas',{height,on:{pointerdown:input,pointermove:input},width})
 	]
 }
-output.render=function({ctx,dom,state,shadowRoot})
+output.render=function(editor)
 {
-	const {height,width}=state.viewbox
+	const 
+	{ctx,state,shadowRoot}=editor,
+	{height,width}=state.viewbox
 	ctx.clearRect(0,0,height,width)
 	Object.entries(state.pts)
 	.forEach(function([coords,paletteIndex])
@@ -75,33 +77,24 @@ output.render=function({ctx,dom,state,shadowRoot})
 		[x,y]=coords.split(',').map(num=>parseInt(num))
 		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
 	})
-	v.flatUpdate(shadowRoot,dom)
+	const newDom=output(state)
+	v.flatUpdate(shadowRoot,editor.dom,newDom)
+	editor.dom=newDom
 }
 function input(evt)
+{
+	const//@todo clean up evt2editor code
+	editor=evt.path.find(x=>(x.tagName||'').toLowerCase()==='pixel-editor')
+	input[evt.type](evt,editor)
+}
+input.pointerdown=function(evt,editor)
 {
 	const
 	{on,off}=util,
 	{target:el}=evt,
-	editor=evt.path.find(x=>(x.tagName||'').toLowerCase()==='pixel-editor'),
 	drawPt=function(evt)
 	{
-		const
-		[rect]=el.getClientRects(),
-		can=
-		{
-			h:rect.height,
-			w:rect.width,
-			x:rect.x,
-			y:rect.y
-		},
-		img=
-		{
-			h:el.height,
-			w:el.width
-		},
-		x=Math.round((evt.pageX-can.x)*(img.w/can.w)),
-		y=Math.round((evt.pageY-can.y)*(img.h/can.h))
-		editor.state.pts[x+','+y]=0//@todo allow other colors
+		
 	},
 	cleanup=function()
 	{
@@ -117,4 +110,14 @@ function input(evt)
 	}
 	setup()
 	drawPt(evt)
+}
+input.pointermove=function(evt,editor)
+{
+	const
+	{target:img}=evt,
+	[can]=img.getClientRects(),
+	x=Math.abs(Math.round((evt.pageX-can.x)*(img.width/can.width))),
+	y=Math.abs(Math.round((evt.pageY-can.y)*(img.height/can.height)))
+	editor.state.cursor.x=x
+	editor.state.cursor.y=y
 }

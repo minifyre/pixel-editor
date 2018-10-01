@@ -15,6 +15,10 @@ canvas
 		linear-gradient(90deg,transparent 50%,rgba(153,153,153,0.5) 50%);
 	background-size:100% 8px, 8px 100%;
 }
+.coords
+{
+	font-size:0.5rem;/*@todo come up with a better solution to this*/
+}
 .palette button
 {
 	border:none;
