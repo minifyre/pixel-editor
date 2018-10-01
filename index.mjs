@@ -12,7 +12,7 @@ util=
 
 config.state=
 {
-	pallet:['#000'],
+	palette:['#000'],
 	pts:{},
 	viewbox:{height:150,width:300,x:0,y:0}
 }
@@ -52,10 +52,10 @@ output.render=function({ctx,state})
 	const {height,width}=state.viewbox
 	ctx.clearRect(0,0,height,width)
 	Object.entries(state.pts)
-	.forEach(function([coords,palletIndex])
+	.forEach(function([coords,paletteIndex])
 	{
 		const
-		color=state.pallet[palletIndex],
+		color=state.palette[paletteIndex],
 		[x,y]=coords.split(',').map(num=>parseInt(num))
 		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
 	})
