@@ -1,3 +1,12 @@
+:host
+{
+	contain:content;
+	display:grid;
+	grid-template-columns:2rem auto;
+	grid-template-rows:2rem auto;
+	height:100%;
+	width:100%;
+}
 canvas
 {
 	background-color:#fff;
@@ -5,4 +14,12 @@ canvas
 		linear-gradient(0deg,rgba(153,153,153,0.5) 50%,transparent 50%),
 		linear-gradient(90deg,transparent 50%,rgba(153,153,153,0.5) 50%);
 	background-size:100% 8px, 8px 100%;
+}
+.palette button
+{
+	border:none;
+	display:block;
+	height:1.5rem;
+	margin:0.25rem;
+	width:1.5rem;
 }

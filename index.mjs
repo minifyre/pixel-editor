@@ -12,7 +12,8 @@ util=
 
 config.state=
 {
-	pallet:['#000'],
+	cursor:{x:0,y:0},
+	palette:['#000'],
 	pts:{},
 	viewbox:{height:150,width:300,x:0,y:0}
 }
@@ -40,10 +41,21 @@ function logic(state)
 {
 	return Object.assign({},config.state,state)
 }
-function output({viewbox})
+function output({cursor,palette,viewbox})
 {
-	const {height,width}=viewbox
+	const
+	{height,width}=viewbox,
+	colors=Object.values(palette)
+	.map(color=>v('button',{style:`background-color:${color}`}))
 	return [v('style',{},config.css),
+		v('div.coords',{},cursor.x+','+cursor.y),
+		v('header.tools',{},
+			v('button',{},'pencil')
+		),
+		v('footer.palette',{},
+			...colors,
+			v('button',{},'+')
+		),
 		v('canvas',{height,on:{pointerdown:input},width})
 	]
 }
@@ -52,10 +64,10 @@ output.render=function({ctx,state})
 	const {height,width}=state.viewbox
 	ctx.clearRect(0,0,height,width)
 	Object.entries(state.pts)
-	.forEach(function([coords,palletIndex])
+	.forEach(function([coords,paletteIndex])
 	{
 		const
-		color=state.pallet[palletIndex],
+		color=state.palette[paletteIndex],
 		[x,y]=coords.split(',').map(num=>parseInt(num))
 		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
 	})
