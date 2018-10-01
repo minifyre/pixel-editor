@@ -29,10 +29,14 @@ pixel.editor=class extends HTMLElement
 	constructor(state={})
 	{
 		super()
-		const shadow=this.attachShadow({mode:'open'})
-		this.state=truth(logic(state),()=>output.render(this))
+		const
+		shadow=this.attachShadow({mode:'open'}),
+		initalState=logic(state)
+		let renderer=x=>x
+		this.state=truth(initalState,(...args)=>renderer(args))
 		this.dom=output(this.state)
 		v.flatUpdate(shadow,this.dom)
+		renderer=()=>output.render(this)
 		this.ctx=Object.assign(shadow.querySelector('canvas').getContext('2d'),{imageSmoothingEnabled:false})
 		//@todo copy resize observer from code-editor & integrate it here
 	}
@@ -59,7 +63,7 @@ function output({cursor,palette,viewbox})
 		v('canvas',{height,on:{pointerdown:input},width})
 	]
 }
-output.render=function({ctx,state})
+output.render=function({ctx,dom,state,shadowRoot})
 {
 	const {height,width}=state.viewbox
 	ctx.clearRect(0,0,height,width)
@@ -71,6 +75,7 @@ output.render=function({ctx,state})
 		[x,y]=coords.split(',').map(num=>parseInt(num))
 		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
 	})
+	v.flatUpdate(shadowRoot,dom)
 }
 function input(evt)
 {
