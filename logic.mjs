@@ -6,6 +6,6 @@ silo={config,logic,util}
 logic.draw=function(state,x,y)
 {
 	//@todo enable different tools
-	state.pts[x+','+y]=0//@todo allow different colors
+	state.pts[x+','+y]=state.color
 }
 export default silo

@@ -5,6 +5,24 @@ function input(evt,editor)
 	input[evt.type](evt,editor)
 }
 silo.input=input
+
+input.block=evt=>evt.preventDefault()
+
+input.colorAdd=function(evt)
+{
+}
+input.colorEdit=function(evt)
+{
+
+}
+input.colorSelect=function(evt,editor=util.evt2customEl(evt))
+{
+	console.log(evt)
+	const id=parseInt(evt.target.getAttribute('data-color'))
+	if(id===editor.state.color) input.colorEdit(evt)
+	else editor.state.color=id
+}
+//canvas events
 input.pointerup=input.pointerdown=function(evt,editor)
 {
 	const

@@ -15,4 +15,6 @@ util.evt2coords=function(evt)
 	.map(num=>Math.abs(Math.round(num)))
 	return {x,y}
 }
+util.evt2customEl=({path})=>path.find(x=>(x.tagName||'').match('-'))
+
 export default util

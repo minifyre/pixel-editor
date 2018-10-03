@@ -7,6 +7,10 @@
 	height:100%;
 	width:100%;
 }
+[hidden]
+{
+	display:none;
+}
 canvas
 {
 	background-color:#fff;
@@ -19,6 +23,10 @@ canvas
 {
 	font-size:0.5rem;/*@todo come up with a better solution to this*/
 }
+.active
+{
+	box-shadow:0 0 0.2rem #fff;
+}
 .palette button
 {
 	border:none;
@@ -26,6 +34,10 @@ canvas
 	height:1.5rem;
 	margin:0.25rem;
 	width:1.5rem;
+}
+.palette button:focus
+{
+	outline:none;
 }
 .ui,
 .ui :not(.selectable)

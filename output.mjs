@@ -9,7 +9,15 @@ function output(editor)
 	on={},
 	handler=evt=>silo.input(evt,editor),
 	colors=Object.values(palette)
-	.map(color=>v('button',{style:`background-color:${color}`})),
+	.map(function(color,id)
+	{
+		const
+		data={color:id},
+		on={contextmenu:input.block,pointerup:input.colorSelect},
+		active=id===editor.state.color?'active':'inactive',
+		style=`background-color:${color}`
+		return v('button',{class:active,data,on,style})
+	}),
 	{x,y}=[...Object.values(pointers),viewbox][0]
 
 	'over,down,move,up,out'
@@ -23,9 +31,10 @@ function output(editor)
 		),
 		v('footer.palette.ui',{},
 			...colors,
-			v('button',{},'+')
+			v('button',{on:{pointerup:input.colorAdd}},'+')
 		),
-		v('canvas',{height,on,width})
+		v('canvas',{height,on,width}),
+		v('color-picker',{hidden:'hidden',on:{change:console.log}})
 	]
 }
 silo.output=output
@@ -45,7 +54,7 @@ output.render=function(editor)
 		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
 	})
 	const newDom=output(editor)
-	v.flatUpdate(shadowRoot,editor.dom,newDom)
+	v.flatUpdate(shadowRoot,newDom,editor.dom)
 	editor.dom=newDom
 }
 export default silo
