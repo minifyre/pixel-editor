@@ -1,12 +1,14 @@
 import silo from './input.mjs'
 import v from './node_modules/v/v.mjs'
 const {config,input,logic,util}=silo
+
+
 function output(editor)
 {
 	const
-	{palette,pointers,viewbox}=editor.state,
+	{palette,pointers,selectedColors,viewbox}=editor.state,
 	{height,width}=viewbox,
-	on={},
+	on={contextmenu:input.block},
 	handler=evt=>silo.input(evt,editor),
 	colors=Object.values(palette)
 	.map(function(color,id)
@@ -14,9 +16,11 @@ function output(editor)
 		const
 		data={color:id},
 		on={contextmenu:input.block,pointerup:input.colorSelect},
-		active=id===editor.state.color?'active':'inactive',
-		style=`background-color:${color}`
-		return v('button',{class:active,data,on,style})
+		style=`background-color:${color}`,
+		[type]=Object
+			.entries(selectedColors)
+			.find(([type,colorId])=>colorId===id)||['']
+		return v('button',{data,on,style},type)
 	}),
 	{x,y}=[...Object.values(pointers),viewbox][0]
 

@@ -17,10 +17,11 @@ input.colorEdit=function(evt)
 }
 input.colorSelect=function(evt,editor=util.evt2customEl(evt))
 {
-	console.log(evt)
-	const id=parseInt(evt.target.getAttribute('data-color'))
-	if(id===editor.state.color) input.colorEdit(evt)
-	else editor.state.color=id
+	const
+	type=evt.button,//primary, secondary, etc. [0=left click,1=wheel,2=right]
+	id=parseInt(evt.target.getAttribute('data-color'))
+	if(id===editor.state.selectedColors[type]) input.colorEdit(evt)
+	else editor.state.selectedColors[type]=id
 }
 //canvas events
 input.pointerup=input.pointerdown=function(evt,editor)
@@ -29,7 +30,7 @@ input.pointerup=input.pointerdown=function(evt,editor)
 	{x,y}=util.evt2coords(evt),
 	{pointerId:id,pressure}=evt
 	editor.state.pointers[id].pressure=pressure
-	if(pressure) logic.draw(editor.state,x,y)
+	if(pressure) logic.draw(editor.state,x,y,evt.button)
 }
 input.pointerout=function({pointerId:id},editor)
 {
@@ -48,6 +49,6 @@ input.pointermove=function(evt,editor)
 	{x,y}=util.evt2coords(evt),
 	{pointerId:id,pressure}=evt
 	Object.assign(editor.state.pointers[id],{pressure,x,y})
-	if(pressure) logic.draw(editor.state,x,y)
+	if(pressure) logic.draw(editor.state,x,y,evt.button)
 }
 export default silo
