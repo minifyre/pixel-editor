@@ -15,9 +15,10 @@ util.evt2coords=function(evt)
 	.map(num=>Math.abs(Math.round(num)))
 	return {x,y}
 }
-util.evt2buttons=function({buttons})
+util.evt2buttons=function({buttons:total})
 {
-	return Object.entries(
+	const
+	buttonMap=
 	{
 		32:5,//pen & eraser
 		16:4,//forward
@@ -25,16 +26,24 @@ util.evt2buttons=function({buttons})
 		4:1,//right click
 		2:2,//mouse wheel
 		1:0//left click
-	})
-	.reduce(function(obj,[num,buttonType])
+	},
+	pressedBtnCodes=[]
+
+	Object.keys(buttonMap)
+	.map(key=>parseInt(key))
+	.sort((a,b)=>b-a)
+	.reduce(function(total,num)
 	{
-		if(obj.total>=num)
+		if(total>=num)
 		{
-			obj.btns.unshift(buttonType)
-			obj.total-=num
+			pressedBtnCodes.unshift(num)
+			total-=num
 		}
-		return obj
-	},{btns:[],total:buttons}).btns
+		return total
+	},total)
+	const prssedBtns=pressedBtnCodes.map(key=>buttonMap[key])
+	//1 is set as long as there is contact (even if not a left click)
+	return prssedBtns.length>1?prssedBtns.filter(x=>x!==0):prssedBtns
 }
 util.evt2customEl=({path})=>path.find(x=>(x.tagName||'').match('-'))
 export default util
