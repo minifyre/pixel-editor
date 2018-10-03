@@ -17,9 +17,11 @@ function output(editor)
 		data={color:id},
 		on={contextmenu:input.block,pointerup:input.colorSelect},
 		style=`background-color:${color}`,
-		[type]=Object
-			.entries(selectedColors)
-			.find(([type,colorId])=>colorId===id)||['']
+		type=	Object
+				.entries(selectedColors)
+				.filter(([type,colorId])=>colorId===id)
+				.map(([type])=>type)
+				.join(',')
 		return v('button',{data,on,style},type)
 	}),
 	{x,y}=[...Object.values(pointers),viewbox][0]
