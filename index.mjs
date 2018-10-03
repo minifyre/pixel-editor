@@ -1,8 +1,10 @@
 import silo from './output.mjs'
 import truth from './node_modules/truth/truth.mjs'
+import color from './node_modules/color-picker/index.mjs'
 const {config,input,logic,output,util,v}=silo
 export default async function pixel(url='/node_modules/pixel-editor/')
 {
+	await color()
 	const
 	[css]=await util.importFiles([url+'index.css'])
 	config.css=css
