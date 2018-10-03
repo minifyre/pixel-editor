@@ -49,6 +49,6 @@ input.pointermove=function(evt,editor)
 	{x,y}=util.evt2coords(evt),
 	{pointerId:id,pressure}=evt
 	Object.assign(editor.state.pointers[id],{pressure,x,y})
-	if(pressure) logic.draw(editor.state,x,y,evt.button)
+	if(pressure) logic.draw(editor.state,x,y,util.evt2buttons(evt)[0])
 }
 export default silo
