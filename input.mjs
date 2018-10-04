@@ -20,10 +20,9 @@ input.colorEdit=function(evt,editor)
 input.colorSelect=function(evt,editor=util.evt2customEl(evt))
 {
 	const
-	type=evt.button,//primary, secondary, etc. [0=left click,1=wheel,2=right]
-	id=parseInt(evt.target.getAttribute('data-color'))
-	if(id===editor.state.selectedColors[type]) logic.colorEdit(editor.state,id)
-	else editor.state.selectedColors[type]=id
+	{button,target}=evt,//primary, secondary, etc. [0=left click,1=wheel,2=right]
+	id=parseInt(target.getAttribute('data-color'))
+	logic.colorSelect(editor.state,id,button)
 }
 //canvas events
 input.pointerup=input.pointerdown=function(evt,editor)
