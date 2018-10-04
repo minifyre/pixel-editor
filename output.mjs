@@ -16,7 +16,7 @@ function output(editor)
 		const
 		data={color:id},
 		on={contextmenu:input.block,pointerup:input.colorSelect},
-		style=`background-color:${color}`,
+		style=`background-color:${color};`,
 		type=	Object
 				.entries(selectedColors)
 				.filter(([type,colorId])=>colorId===id)
