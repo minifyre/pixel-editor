@@ -10,6 +10,10 @@ input.block=evt=>evt.preventDefault()
 
 input.colorAdd=function(evt)
 {
+	const 
+	editor=util.evt2customEl(evt),
+	rgb=Array(3).fill(1).map(_=>Math.floor(Math.random()*256))
+	logic.colorAdd(editor.state,'rgb('+rgb.join(',')+')',evt.button)
 }
 input.colorEdit=function(evt,editor)
 {
