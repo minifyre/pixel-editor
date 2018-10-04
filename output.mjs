@@ -1,21 +1,37 @@
 import silo from './input.mjs'
 import v from './node_modules/v/v.mjs'
 const {config,input,logic,util}=silo
+
+
 function output(editor)
 {
 	const
-	{palette,pointers,viewbox}=editor.state,
+	{editColor,palette,pointers,selectedColors,viewbox}=editor.state,
 	{height,width}=viewbox,
-	on={},
+	on={contextmenu:input.block},
 	handler=evt=>silo.input(evt,editor),
 	colors=Object.values(palette)
-	.map(color=>v('button',{style:`background-color:${color}`})),
+	.map(function(color,id)
+	{
+		const
+		data={color:id},
+		on={contextmenu:input.block,pointerup:input.colorSelect},
+		style=`background-color:${color};`,
+		type=	Object
+				.entries(selectedColors)
+				.filter(([type,colorId])=>colorId===id)
+				.map(([type])=>type)
+				.join(',')
+		return v('button',{data,on,style},type)
+	}),
 	{x,y}=[...Object.values(pointers),viewbox][0]
 
 	'over,down,move,up,out'
 	.split(',')
 	.forEach(type=>on[`pointer${type}`]=handler)
 
+	const [modal,edit]=editColor===-1?	[{hidden:'hidden'},{}]:
+										[{},{value:palette[editColor]}]
 	return [v('style',{},config.css),
 		v('.coords.ui',{},x+','+y),
 		v('header.tools.ui',{},
@@ -23,9 +39,12 @@ function output(editor)
 		),
 		v('footer.palette.ui',{},
 			...colors,
-			v('button',{},'+')
+			v('button',{on:{pointerup:input.colorAdd}},'+')
 		),
-		v('canvas',{height,on,width})
+		v('canvas',{height,on,width}),
+		v('.modal',modal,
+			v('color-picker',{...edit,on:{change:evt=>input.colorEdit(evt,editor)}})
+		)
 	]
 }
 silo.output=output
@@ -45,7 +64,7 @@ output.render=function(editor)
 		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
 	})
 	const newDom=output(editor)
-	v.flatUpdate(shadowRoot,editor.dom,newDom)
+	v.flatUpdate(shadowRoot,newDom,editor.dom)
 	editor.dom=newDom
 }
 export default silo
