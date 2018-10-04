@@ -1,6 +1,7 @@
 const config={}
 config.state=
 {
+	editColor:-1,
 	palette:['#000','#fff','#f00'],
 	pointers:{},
 	pts:{},

@@ -8,4 +8,5 @@ logic.draw=function(state,x,y,type=0)
 	//@todo enable different tools
 	state.pts[x+','+y]=state.selectedColors[type]
 }
+logic.colorEdit=(state,color)=>state.editColor=color
 export default silo

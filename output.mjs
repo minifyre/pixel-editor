@@ -6,7 +6,7 @@ const {config,input,logic,util}=silo
 function output(editor)
 {
 	const
-	{palette,pointers,selectedColors,viewbox}=editor.state,
+	{editColor,palette,pointers,selectedColors,viewbox}=editor.state,
 	{height,width}=viewbox,
 	on={contextmenu:input.block},
 	handler=evt=>silo.input(evt,editor),
@@ -30,6 +30,8 @@ function output(editor)
 	.split(',')
 	.forEach(type=>on[`pointer${type}`]=handler)
 
+	const [modal,edit]=editColor===-1?	[{hidden:'hidden'},{}]:
+										[{},{value:palette[editColor]}]
 	return [v('style',{},config.css),
 		v('.coords.ui',{},x+','+y),
 		v('header.tools.ui',{},
@@ -40,7 +42,9 @@ function output(editor)
 			v('button',{on:{pointerup:input.colorAdd}},'+')
 		),
 		v('canvas',{height,on,width}),
-		v('color-picker',{hidden:'hidden',on:{change:console.log}})
+		v('.modal',modal,
+			v('color-picker',{...edit,on:{change:console.log}})
+		)
 	]
 }
 silo.output=output
