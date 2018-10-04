@@ -43,7 +43,7 @@ function output(editor)
 		),
 		v('canvas',{height,on,width}),
 		v('.modal',modal,
-			v('color-picker',{...edit,on:{change:console.log}})
+			v('color-picker',{...edit,on:{change:evt=>input.colorEdit(evt,editor)}})
 		)
 	]
 }

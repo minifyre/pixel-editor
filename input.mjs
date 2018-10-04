@@ -11,6 +11,12 @@ input.block=evt=>evt.preventDefault()
 input.colorAdd=function(evt)
 {
 }
+input.colorEdit=function(evt,editor)
+{
+	editor.state.palette[editor.state.editColor]=evt.target.value
+	editor.state.editColor=-1
+}
+
 input.colorSelect=function(evt,editor=util.evt2customEl(evt))
 {
 	const
