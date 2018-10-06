@@ -5,9 +5,9 @@ const
 function output(editor)
 {
 	const
-	{editColor,palette,pointers,selectedColors,viewbox}=editor.state,
+	{editColor,modified,palette,pointers,selectedColors,viewbox}=editor.state,
 	{height,width}=viewbox,
-	on={contextmenu:input.block},
+	on={contextmenu:input.block,render:evt=>input.render(evt,editor)},
 	handler=evt=>silo.input(evt,editor),
 	colors=Object.values(palette)
 	.map(function(color,id)
@@ -39,7 +39,7 @@ function output(editor)
 			...colors,
 			v('button',{on:{pointerup:input.colorAdd}},'+')
 		),
-		v('canvas',{height,on,width}),
+		v('canvas',{data:{modified},height,on,width}),
 		v('.modal',modal,
 			v('color-picker',{...edit,on:{change:evt=>input.colorEdit(evt,editor)}})
 		)
@@ -47,20 +47,8 @@ function output(editor)
 }
 output.render=function(editor)
 {
-	const 
-	{ctx,state,shadowRoot}=editor,
-	{height,width}=state.viewbox
-	ctx.clearRect(0,0,height,width)
-	Object.entries(state.pts)
-	.forEach(function([coords,paletteIndex])
-	{
-		const
-		color=state.palette[paletteIndex],
-		[x,y]=coords.split(',').map(num=>parseInt(num))
-		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
-	})
 	const newDom=output(editor)
-	v.flatUpdate(shadowRoot,newDom,editor.dom)
+	v.flatUpdate(editor.shadowRoot,newDom,editor.dom)
 	editor.dom=newDom
 }
 export default Object.assign(silo,{output})
