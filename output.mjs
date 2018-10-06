@@ -7,7 +7,7 @@ function output(editor)
 	const
 	{editColor,modified,palette,pointers,selectedColors,viewbox}=editor.state,
 	{height,width}=viewbox,
-	on={contextmenu:input.block,render:evt=>input.render(evt,editor)},
+	on={contextmenu:input.block,render:()=>output.renderCanvas(editor)},
 	handler=evt=>silo.input(evt,editor),
 	colors=Object.values(palette)
 	.map(function(color,id)
@@ -45,10 +45,20 @@ function output(editor)
 		)
 	]
 }
-output.render=function(editor)
+output.renderCanvas=function(editor)
 {
-	const newDom=output(editor)
-	v.flatUpdate(editor.shadowRoot,newDom,editor.dom)
-	editor.dom=newDom
+	const//@todo find a way to simplify
+	ctx=editor.ctx||editor.shadowRoot.querySelector('canvas').getContext('2d'),
+	{state:{palette,pts,viewbox}}=editor,
+	{height,width}=viewbox
+	ctx.clearRect(0,0,height,width)
+	Object.entries(pts)
+	.forEach(function([coords,paletteIndex])
+	{
+		const
+		fillStyle=palette[paletteIndex],
+		[x,y]=coords.split(',').map(num=>parseInt(num))
+		Object.assign(ctx,{fillStyle}).fillRect(x,y,1,1)
+	})
 }
 export default Object.assign(silo,{output})

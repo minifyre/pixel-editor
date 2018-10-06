@@ -50,21 +50,4 @@ input.pointermove=function(evt,editor)
 	Object.assign(editor.state.pointers[id],{pressure,x,y})
 	if(pressure) logic.draw(editor.state,x,y,util.evt2buttons(evt)[0])
 }
-
-input.render=function(evt,editor)
-{
-	const 
-	ctx=evt.target.getContext('2d'),
-	{state:{palette,pts,viewbox}}=editor,
-	{height,width}=viewbox
-	ctx.clearRect(0,0,height,width)
-	Object.entries(pts)
-	.forEach(function([coords,paletteIndex])
-	{
-		const
-		fillStyle=palette[paletteIndex],
-		[x,y]=coords.split(',').map(num=>parseInt(num))
-		Object.assign(ctx,{fillStyle}).fillRect(x,y,1,1)
-	})
-}
 export default silo
