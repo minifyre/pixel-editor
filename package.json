@@ -5,9 +5,8 @@
 	"license": "MIT",
 	"version": "0.5.0",
 	"dependencies": {
-		"pane": "minifyre/pane-viewer",
-		"truth": "minifyre/truth",
-		"v": "minifyre/v"
+		"color-picker": "minifyre/color-picker",
+		"pane-viewer": "minifyre/pane-viewer"
 	},
 	"devDependencies": {
 		"cherub": "minifyre/cherub"
