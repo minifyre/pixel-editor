@@ -1,11 +1,5 @@
 import silo from './logic.mjs'
-const {config,logic,util}=silo
-function input(evt,editor)
-{
-	input[evt.type](evt,editor)
-}
-silo.input=input
-
+const {config,input,logic,util}=silo
 input.block=evt=>evt.preventDefault()
 
 input.colorAdd=function(evt)

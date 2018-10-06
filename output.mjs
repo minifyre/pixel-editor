@@ -1,14 +1,13 @@
 import silo from './input.mjs'
-import v from './node_modules/v/v.mjs'
-const {config,input,logic,util}=silo
-
-
+const
+{config,input,logic,util}=silo,
+{v}=util
 function output(editor)
 {
 	const
-	{editColor,palette,pointers,selectedColors,viewbox}=editor.state,
+	{editColor,modified,palette,pointers,selectedColors,viewbox}=editor.state,
 	{height,width}=viewbox,
-	on={contextmenu:input.block},
+	on={contextmenu:input.block,render:()=>output.renderCanvas(editor)},
 	handler=evt=>silo.input(evt,editor),
 	colors=Object.values(palette)
 	.map(function(color,id)
@@ -26,9 +25,8 @@ function output(editor)
 	}),
 	{x,y}=[...Object.values(pointers),viewbox][0]
 
-	'over,down,move,up,out'
-	.split(',')
-	.forEach(type=>on[`pointer${type}`]=handler)
+	'over,down,move,up,out'.split(',').map(x=>`pointer${x}`)
+	.forEach(fn=>on[fn]=evt=>input[fn](evt,editor))
 
 	const [modal,edit]=editColor===-1?	[{hidden:'hidden'},{}]:
 										[{},{value:palette[editColor]}]
@@ -41,30 +39,26 @@ function output(editor)
 			...colors,
 			v('button',{on:{pointerup:input.colorAdd}},'+')
 		),
-		v('canvas',{height,on,width}),
+		v('canvas',{data:{modified},height,on,width}),
 		v('.modal',modal,
 			v('color-picker',{...edit,on:{change:evt=>input.colorEdit(evt,editor)}})
 		)
 	]
 }
-silo.output=output
-silo.v=v
-output.render=function(editor)
+output.renderCanvas=function(editor)
 {
-	const 
-	{ctx,state,shadowRoot}=editor,
-	{height,width}=state.viewbox
+	const//@todo find a way to simplify
+	ctx=editor.ctx||editor.shadowRoot.querySelector('canvas').getContext('2d'),
+	{state:{palette,pts,viewbox}}=editor,
+	{height,width}=viewbox
 	ctx.clearRect(0,0,height,width)
-	Object.entries(state.pts)
+	Object.entries(pts)
 	.forEach(function([coords,paletteIndex])
 	{
 		const
-		color=state.palette[paletteIndex],
+		fillStyle=palette[paletteIndex],
 		[x,y]=coords.split(',').map(num=>parseInt(num))
-		Object.assign(ctx,{fillStyle:color}).fillRect(x,y,1,1)
+		Object.assign(ctx,{fillStyle}).fillRect(x,y,1,1)
 	})
-	const newDom=output(editor)
-	v.flatUpdate(shadowRoot,newDom,editor.dom)
-	editor.dom=newDom
 }
-export default silo
+export default Object.assign(silo,{output})
