@@ -1,8 +1,5 @@
-import config from './config.mjs'
-import util from './util.mjs'
-const
-logic=state=>Object.assign({id:util.id()},config.state,state),
-silo={config,logic,util}
+import silo from './util.mjs'
+const {logic}=silo
 logic.draw=function(state,x,y,type=0)
 {
 	//@todo enable different tools
