@@ -1,8 +1,7 @@
 import silo from './input.mjs'
-import v from './node_modules/v/v.mjs'
-const {config,input,logic,util}=silo
-
-
+const
+{config,input,logic,util}=silo,
+{v}=util
 function output(editor)
 {
 	const
@@ -46,8 +45,6 @@ function output(editor)
 		)
 	]
 }
-silo.output=output
-silo.v=v
 output.render=function(editor)
 {
 	const 
@@ -66,4 +63,4 @@ output.render=function(editor)
 	v.flatUpdate(shadowRoot,newDom,editor.dom)
 	editor.dom=newDom
 }
-export default silo
+export default Object.assign(silo,{output})
