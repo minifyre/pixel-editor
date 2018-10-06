@@ -10,6 +10,7 @@ export default async function pixel(url='/node_modules/pixel-editor/')
 	config.css=css
 	customElements.define('pixel-editor',pixel.editor)
 }
+Object.assign(pixel,silo)
 pixel.editor=class extends HTMLElement
 {
 	constructor(state={})
