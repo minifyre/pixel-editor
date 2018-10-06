@@ -23,26 +23,26 @@ input.pointerup=input.pointerdown=function(evt,editor)
 	const
 	{x,y}=util.evt2coords(evt),
 	{pointerId:id,pressure}=evt
-	editor.state.pointers[id].pressure=pressure
+	editor.state.view.pointers[id].pressure=pressure
 	if(pressure) logic.draw(editor.state,x,y,evt.button)
 }
 input.pointerout=function({pointerId:id},editor)
 {
-	delete editor.state.pointers[id]
+	delete editor.state.view.pointers[id]
 }
 input.pointerover=function(evt,editor)
 {
 	const
 	{x,y}=util.evt2coords(evt),
 	{pointerId:id,pressure}=evt
-	editor.state.pointers[id]={id,pressure,x,y}
+	editor.state.view.pointers[id]={id,pressure,x,y}
 }
 input.pointermove=function(evt,editor)
 {
 	const
 	{x,y}=util.evt2coords(evt),
 	{pointerId:id,pressure}=evt
-	Object.assign(editor.state.pointers[id],{pressure,x,y})
+	Object.assign(editor.state.view.pointers[id],{pressure,x,y})
 	if(pressure) logic.draw(editor.state,x,y,util.evt2buttons(evt)[0])
 }
 export default silo
