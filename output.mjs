@@ -26,9 +26,8 @@ function output(editor)
 	}),
 	{x,y}=[...Object.values(pointers),viewbox][0]
 
-	'over,down,move,up,out'
-	.split(',')
-	.forEach(type=>on[`pointer${type}`]=handler)
+	'over,down,move,up,out'.split(',').map(x=>`pointer${x}`)
+	.forEach(fn=>on[fn]=evt=>input[fn](evt,editor))
 
 	const [modal,edit]=editColor===-1?	[{hidden:'hidden'},{}]:
 										[{},{value:palette[editColor]}]
