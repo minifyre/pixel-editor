@@ -52,8 +52,8 @@ output.renderCanvas=function(editor)
 	const//@todo find a way to simplify
 	{shadowRoot,state}=editor,
 	ctx=editor.ctx||shadowRoot.querySelector('canvas').getContext('2d'),
-	{pts,viewbox}=state,
-	{palette}=state.file,
+	{viewbox}=state,
+	{palette,pts}=state.file,
 	{height,width}=viewbox
 	ctx.clearRect(0,0,height,width)
 	Object.entries(pts)
