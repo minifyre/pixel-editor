@@ -5,9 +5,9 @@ const
 function output(editor)
 {
 	const
-	{editColor,pointers,selectedColors}=editor.state.view,
+	{editColor,pointers,selectedColors,viewbox}=editor.state.view,
 	{palette}=editor.state.file,
-	{modified,viewbox}=editor.state,
+	{modified}=editor.state,
 	{height,width}=viewbox,
 	on={contextmenu:input.block,render:()=>output.renderCanvas(editor)},
 	handler=evt=>silo.input(evt,editor),
@@ -52,9 +52,8 @@ output.renderCanvas=function(editor)
 	const//@todo find a way to simplify
 	{shadowRoot,state}=editor,
 	ctx=editor.ctx||shadowRoot.querySelector('canvas').getContext('2d'),
-	{viewbox}=state,
 	{palette,pts}=state.file,
-	{height,width}=viewbox
+	{height,width}=state.view.viewbox
 	ctx.clearRect(0,0,height,width)
 	Object.entries(pts)
 	.forEach(function([coords,paletteIndex])
