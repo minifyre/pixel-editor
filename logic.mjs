@@ -21,4 +21,10 @@ logic.colorSelect=function(state,id,type)
 	if(id===state.selectedColors[type]) logic.colorEdit(state,id)//edit
 	else state.selectedColors[type]=id//select
 }
+logic.colorSet=function(state,color)
+{
+	state.file.palette[state.view.editColor]=color
+	state.view.editColor=-1
+	state.modified=Date.now()
+}
 export default silo

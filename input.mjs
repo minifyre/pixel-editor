@@ -9,14 +9,7 @@ input.colorAdd=function(evt)
 	rgb=Array(3).fill(1).map(_=>Math.floor(Math.random()*256))
 	logic.colorAdd(editor.state,'rgb('+rgb.join(',')+')',evt.button)
 }
-input.colorEdit=function(evt,editor)
-{
-	//@todo move into logic
-	editor.state.file.palette[editor.state.view.editColor]=evt.target.value
-	editor.state.view.editColor=-1
-	editor.state.modified=Date.now()
-}
-
+input.colorEdit=({target},{state})=>logic.colorSet(state,target.value)
 input.colorSelect=function(evt,editor=util.evt2customEl(evt))
 {
 	const
