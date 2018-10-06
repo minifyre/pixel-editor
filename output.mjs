@@ -6,8 +6,7 @@ function output(editor)
 {
 	const
 	{editColor,pointers,selectedColors,viewbox}=editor.state.view,
-	{palette}=editor.state.file,
-	{modified}=editor.state,
+	{modified,palette}=editor.state.file,
 	{height,width}=viewbox,
 	on={contextmenu:input.block,render:()=>output.renderCanvas(editor)},
 	handler=evt=>silo.input(evt,editor),

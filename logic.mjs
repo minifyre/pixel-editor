@@ -4,7 +4,7 @@ logic.draw=function(state,x,y,type=0)
 {
 	//@todo enable different tools
 	state.file.pts[x+','+y]=state.view.selectedColors[type]
-	state.modified=Date.now()
+	state.file.modified=Date.now()
 }
 logic.colorAdd=function(state,color,type=-1)
 {
@@ -14,7 +14,7 @@ logic.colorAdd=function(state,color,type=-1)
 logic.colorEdit=function(state,color)
 {
 	state.view.editColor=color
-	state.modified=Date.now()
+	state.file.modified=Date.now()
 }
 logic.colorSelect=function(state,id,type)
 {
@@ -25,6 +25,6 @@ logic.colorSet=function(state,color)
 {
 	state.file.palette[state.view.editColor]=color
 	state.view.editColor=-1
-	state.modified=Date.now()
+	state.file.modified=Date.now()
 }
 export default silo
