@@ -11,8 +11,9 @@ input.colorAdd=function(evt)
 }
 input.colorEdit=function(evt,editor)
 {
-	editor.state.palette[editor.state.editColor]=evt.target.value
-	editor.state.editColor=-1
+	//@todo move into logic
+	editor.state.palette[editor.state.view.editColor]=evt.target.value
+	editor.state.view.editColor=-1
 	editor.state.modified=Date.now()
 }
 

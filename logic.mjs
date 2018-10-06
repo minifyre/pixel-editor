@@ -11,7 +11,11 @@ logic.colorAdd=function(state,color,type=-1)
 	const id=state.palette.push(color)-1
 	if(type!==-1) logic.colorSelect(state,id,type)
 }
-logic.colorEdit=(state,editColor)=>Object.assign(state,{editColor,modified:Date.now()})
+logic.colorEdit=function(state,color)
+{
+	state.view.editColor=color
+	state.modified=Date.now()
+}
 logic.colorSelect=function(state,id,type)
 {
 	if(id===state.selectedColors[type]) logic.colorEdit(state,id)//edit
