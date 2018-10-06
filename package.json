@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"version": "0.5.0",
 	"dependencies": {
+		"pane": "minifyre/pane-viewer",
 		"truth": "minifyre/truth",
 		"v": "minifyre/v"
 	},
