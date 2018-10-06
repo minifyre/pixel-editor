@@ -1,7 +1,7 @@
 import config from './config.mjs'
 import util from './util.mjs'
 const
-logic=state=>Object.assign({},config.state,state),
+logic=state=>Object.assign({id:util.id()},config.state,state),
 silo={config,logic,util}
 logic.draw=function(state,x,y,type=0)
 {
