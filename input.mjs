@@ -13,6 +13,7 @@ input.colorEdit=function(evt,editor)
 {
 	editor.state.palette[editor.state.editColor]=evt.target.value
 	editor.state.editColor=-1
+	editor.state.modified=Date.now()
 }
 
 input.colorSelect=function(evt,editor=util.evt2customEl(evt))
