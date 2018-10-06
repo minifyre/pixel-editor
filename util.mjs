@@ -1,11 +1,5 @@
-const util=
-{
-	importFiles:paths=>Promise.all(paths.map(x=>fetch(x).then(x=>x.text()))),
-
-	id:()=>([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,util.idHelper),
-	idHelper:c=>(c^util.idRand()[0]&15>>c/4).toString(16),
-	idRand:()=>crypto.getRandomValues(new Uint8Array(1))
-}
+import silo from './config.mjs'
+const {util}=silo
 util.evt2coords=function(evt)
 {
 	const
@@ -19,6 +13,7 @@ util.evt2coords=function(evt)
 	.map(num=>Math.abs(Math.round(num)))
 	return {x,y}
 }
+//@todo make this cleaer that it is a pointer evt & mouse buttons
 util.evt2buttons=function({buttons:total})
 {
 	const
@@ -49,5 +44,4 @@ util.evt2buttons=function({buttons:total})
 	//1 is set as long as there is contact (even if not a left click)
 	return prssedBtns.length>1?prssedBtns.filter(x=>x!==0):prssedBtns
 }
-util.evt2customEl=({path})=>path.find(x=>(x.tagName||'').match('-'))
-export default util
+export default silo
