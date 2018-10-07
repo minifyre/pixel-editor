@@ -5,11 +5,8 @@ const
 {truth,v}=util
 export default async function pixel(url='/node_modules/pixel-editor/')
 {
+	await silo(url,'pixel-editor',pixel.editor)
 	await color()
-	const
-	[css]=await util.importFiles([url+'index.css'])
-	config.css=css
-	customElements.define('pixel-editor',pixel.editor)
 }
 Object.assign(pixel,silo)
 pixel.editor=class extends HTMLElement
