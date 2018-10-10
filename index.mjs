@@ -1,5 +1,5 @@
-import silo from './output.mjs'
 import color from './node_modules/color-picker/index.mjs'
+import silo from './output.mjs'
 const
 {config,input,logic,output,util}=silo,
 {truth,v}=util
