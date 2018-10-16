@@ -13,10 +13,7 @@ pixel.editor=class extends silo.viewer
 {
 	constructor(state={})
 	{
-		super(state)
-		let renderer=x=>x
-		this.state=truth(logic(state),(...args)=>renderer(args)).state
-		renderer=v.render(this.shadowRoot,this,output)
+		super(state,silo)
 
 		this.ctx=this.shadowRoot.querySelector('canvas').getContext('2d')
 		this.ctx.imageSmoothingEnabled=false
