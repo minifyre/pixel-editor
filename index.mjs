@@ -5,7 +5,7 @@ const
 {truth,v}=util
 export default async function pixel(url='/node_modules/pixel-editor/')
 {
-	await silo(url,'pixel-editor',pixel.editor)
+	await util.mkCustomEl(url,'pixel-editor',pixel.editor)
 	await color()
 }
 Object.assign(pixel,silo)
