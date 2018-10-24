@@ -1,8 +1,7 @@
 import silo from './input.mjs'
+export default silo
 const
-{config,input,logic,util}=silo,
-{v}=util
-function output(editor)
+{config,util,logic,input,output}=silo(function output(editor)
 {
 	const
 	{editColor,pointers,selectedColors,viewbox}=editor.state.view,
@@ -45,7 +44,9 @@ function output(editor)
 			v('color-picker',{...edit,on:{change:evt=>input.colorEdit(evt,editor)}})
 		)
 	]
-}
+}),
+{v}=util
+
 output.renderCanvas=function(editor)
 {
 	const//@todo find a way to simplify
@@ -63,4 +64,3 @@ output.renderCanvas=function(editor)
 		Object.assign(ctx,{fillStyle}).fillRect(x,y,1,1)
 	})
 }
-export default Object.assign(silo,{output})
