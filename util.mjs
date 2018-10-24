@@ -1,5 +1,7 @@
 import silo from './config.mjs'
-const {util}=silo
+export default silo
+const {config,util}=silo()
+
 util.evt2coords=function(evt)
 {
 	const
@@ -44,4 +46,3 @@ util.evt2buttons=function({buttons:total})
 	//1 is set as long as there is contact (even if not a left click)
 	return prssedBtns.length>1?prssedBtns.filter(x=>x!==0):prssedBtns
 }
-export default silo
