@@ -1,5 +1,7 @@
 import silo from './node_modules/pane-viewer/index.mjs'
-const {config}=silo
+export default silo
+const {config}=silo()
+
 config.state=
 {
 	file:
@@ -17,4 +19,3 @@ config.state=
 		//@todo get dimensions into state.view & have viewbox default to those
 	}
 }
-export default silo

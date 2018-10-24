@@ -1,5 +1,7 @@
 import silo from './util.mjs'
-const {logic}=silo
+export default silo
+const {config,util,logic}=silo()
+
 logic.draw=function(state,x,y,type=0)
 {
 	//@todo enable different tools
@@ -27,4 +29,3 @@ logic.colorSet=function(state,color)
 	state.view.editColor=-1
 	state.file.modified=Date.now()
 }
-export default silo

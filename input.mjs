@@ -1,7 +1,8 @@
 import silo from './logic.mjs'
-const {config,input,logic,util}=silo
-input.block=evt=>evt.preventDefault()
+export default silo
+const {config,util,logic,input}=silo()
 
+input.block=evt=>evt.preventDefault()
 input.colorAdd=function(evt)
 {
 	const 
@@ -45,4 +46,3 @@ input.pointermove=function(evt,editor)
 	Object.assign(editor.state.view.pointers[id],{pressure,x,y})
 	if(pressure) logic.draw(editor.state,x,y,util.evt2buttons(evt)[0])
 }
-export default silo
