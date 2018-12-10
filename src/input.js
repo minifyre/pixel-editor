@@ -1,7 +1,3 @@
-import silo from './logic.mjs'
-export default silo
-const {config,util,logic,input}=silo()
-
 input.block=evt=>evt.preventDefault()
 input.colorAdd=function(evt)
 {

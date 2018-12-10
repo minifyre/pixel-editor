@@ -1,7 +1,3 @@
-import silo from './util.mjs'
-export default silo
-const {config,util,logic}=silo()
-
 logic.draw=function(state,x,y,type=0)
 {
 	//@todo enable different tools

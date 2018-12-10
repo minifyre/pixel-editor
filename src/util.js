@@ -1,7 +1,3 @@
-import silo from './config.mjs'
-export default silo
-const {config,util}=silo()
-
 util.evt2coords=function(evt)
 {
 	const
